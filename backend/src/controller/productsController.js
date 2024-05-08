@@ -162,7 +162,11 @@ const deleteProduct = async (req, res) => {
     if (!product || product.ownerId !== userId) {
       return res.status(404).json({ error: "Product not found" });
     }
-
+    
+    // Delete associated rows in CategoryToProduct table
+    await prisma.categoryToProduct.deleteMany({
+      where: { productId: Number(productId) },
+    });
     // Delete product
     await prisma.product.delete({ where: { id: Number(productId) } });
 
