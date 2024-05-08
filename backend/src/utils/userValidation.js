@@ -38,5 +38,17 @@ export const validatePassword = (value) => {
   if (value.length > 200) {
     return "Password must not exceed 200 characters";
   }
+  if (!/[A-Z]/.test(value)) {
+    return "Password must have at least 1 uppercase letter";
+  }
+  if (!/[a-z]/.test(value)) {
+    return "Password must have at least 1 lowercase letter";
+  }
+  if (!/\d/.test(value)) {
+    return "Password must have at least 1 number";
+  }
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value)) {
+    return "Password must have at least 1 symbol";
+  }
   return null;
 };

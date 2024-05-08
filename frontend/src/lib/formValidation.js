@@ -12,8 +12,28 @@ export const validateAddress = (value) =>
 export const validateEmail = (value) =>
   /^\S+@\S+$/.test(value) ? null : "Invalid email";
 
-export const validatePassword = (value) =>
-  value.length < 8 ? "Password must have at least 8 characters" : null;
+export const validatePassword = (value) => {
+  if (value.length < 8) {
+    return "Password must have at least 8 characters";
+  }
+  if (value.length > 200) {
+    return "Password must not exceed 200 characters";
+  }
+  if (!/[A-Z]/.test(value)) {
+    return "Password must have at least 1 uppercase letter";
+  }
+  if (!/[a-z]/.test(value)) {
+    return "Password must have at least 1 lowercase letter";
+  }
+  if (!/\d/.test(value)) {
+    return "Password must have at least 1 number";
+  }
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value)) {
+    return "Password must have at least 1 symbol";
+  }
+  return null;
+};
+
 
 export const validateConfirmPassword = (value, values) =>
   value !== values.password ? "Passwords did not match" : null;
