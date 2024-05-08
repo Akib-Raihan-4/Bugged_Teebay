@@ -39,6 +39,8 @@ const Signup = () => {
     },
   });
 
+  
+
   const registrationHandler = async (values) => {
     try {
       const response = await fetch("http://localhost:3001/api/v1/register", {
@@ -64,6 +66,9 @@ const Signup = () => {
 
   // Progress messages to user
   const errorPopup = (message) => toast.error(message);
+
+  // const hasErrors = Object.keys(form.errors).length > 0;
+  // console.log(form.isValid())
 
   return (
     <Flex
@@ -127,7 +132,7 @@ const Signup = () => {
             </Grid.Col>
             <Grid.Col></Grid.Col>
             <Grid.Col>
-              <MyButton text="register" />
+              <MyButton text="register" disabled={!form.isValid()} />
             </Grid.Col>
             <Grid.Col></Grid.Col>
             <Grid.Col>
