@@ -3,6 +3,7 @@ import { FaTrash } from "react-icons/fa";
 
 // eslint-disable-next-line react/prop-types
 const ProductDelete = ({ onDelete, id }) => {
+  // console.log(id)
   return (
     <ActionIcon
       onClick={(event) => {

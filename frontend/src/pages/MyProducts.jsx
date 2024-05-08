@@ -17,6 +17,7 @@ const MyProducts = () => {
   const [openEditProduct, setOpenEditProduct] = useState(false);
   const [productToEdit, setProductToEdit] = useState({});
   const [opened, { open, close }] = useDisclosure(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("currentUser"))
@@ -100,7 +101,7 @@ const MyProducts = () => {
   const handleDelete = async (productId) => {
     try {
       const apiRes = await fetch(
-        `http://localhost:3001/api/v1/${userId}/${productId}/2`,
+        `http://localhost:3001/api/v1/${userId}/${productIdToDelete}/2`,
         {
           method: "DELETE",
         }
@@ -132,6 +133,7 @@ const MyProducts = () => {
           </Grid.Col>
         ) : (
           products.map((product) => {
+            // console.log(product.id)
             return (
               <Grid.Col key={product.id}>
                 <Container
@@ -141,11 +143,11 @@ const MyProducts = () => {
                   <ProductCard
                     product={product}
                     deleteIcon={
-                      <ProductDelete onDelete={() => open()} id={product.id} />
+                      <ProductDelete onDelete={() => { setProductIdToDelete(product.id); open(); }} />
                     }
                   />
                 </Container>
-                <Modal opened={opened} onClose={close} centered padding={"xl"}>
+                <Modal key={`modal-${product.id}`} opened={opened && productIdToDelete === product.id} onClose={close} centered padding={"xl"}>
                   <Title order={2} fw={300}>
                     Are you sure you want to delete this Product?
                   </Title>
@@ -153,15 +155,12 @@ const MyProducts = () => {
                     <Button uppercase onClick={close} color="red">
                       No
                     </Button>
-                    <Button
-                      uppercase
-                      color="violet"
-                      onClick={() => handleDelete(product.id)}
-                    >
+                    <Button uppercase color="violet" onClick={() => handleDelete(product.id)}>
                       Yes
                     </Button>
                   </Group>
                 </Modal>
+                
               </Grid.Col>
             );
           })

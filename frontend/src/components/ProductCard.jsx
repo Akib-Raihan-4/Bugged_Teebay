@@ -27,7 +27,7 @@ const ProductCard = ({ product, deleteIcon, rentalPeriod }) => {
           Categories:{" "}
           {product.categories
             .map(({ category }) => {
-              console.log(category);
+              // console.log(category);
               const categoryName = category.name.toLowerCase();
               return (
                 categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
