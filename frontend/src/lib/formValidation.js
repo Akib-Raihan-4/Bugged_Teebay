@@ -16,7 +16,9 @@ export const validateAddress = (value) => {
 };
 
 export const validateEmail = (value) =>
-  /^\S+@\S+$/.test(value) ? null : "Invalid email";
+  /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com)$/.test(value)
+    ? null
+    : "Email must be from Gmail or Yahoo and end with gmail.com or yahoo.com";
 
 export const validatePassword = (value) => {
   if (value.length < 8) {
