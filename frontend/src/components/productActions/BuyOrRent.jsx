@@ -14,6 +14,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { GrClose } from "react-icons/gr";
 import { formatDate } from "../../helper/formatDate";
+import { ToastContainer, toast } from "react-toastify";
 
 const BuyOrRent = ({ product, onClose, userId }) => {
   // TODO Reusable input/form componennts
@@ -27,6 +28,19 @@ const BuyOrRent = ({ product, onClose, userId }) => {
       rentalEnd: "",
     },
   });
+
+  const errorPopup = (message) => toast.error(message);
+
+  const validateStep = () => {
+    const { rentalStart, rentalEnd } = rentalDates.values;
+
+    if (rentalStart > rentalEnd) {
+      errorPopup("Rental Start should be lower than Rental End");
+      return false
+    }
+    return true
+
+  };
 
   const productCategoriesArray = product.categories.map(({ category }) => {
     return category.name;
@@ -76,34 +90,36 @@ const BuyOrRent = ({ product, onClose, userId }) => {
   };
 
   const handleRentConfirm = async () => {
-    try {
-      const formattedRentalStart = formatDate(rentalDates.values.rentalStart);
-      const formattedRentalEnd = formatDate(rentalDates.values.rentalEnd);
+    if (validateStep()) {
+      try {
+        const formattedRentalStart = formatDate(rentalDates.values.rentalStart);
+        const formattedRentalEnd = formatDate(rentalDates.values.rentalEnd);
 
-      const response = await fetch(
-        `http://localhost:3001/api/v1/rent/${userId}/${product.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            productId: product.id,
-            rentalStart: formattedRentalStart,
-            rentalEnd: formattedRentalEnd,
-          }),
+        const response = await fetch(
+          `http://localhost:3001/api/v1/rent/${userId}/${product.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              productId: product.id,
+              rentalStart: formattedRentalStart,
+              rentalEnd: formattedRentalEnd,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          console.log("Product successfully rented");
+        } else {
+          console.error("Failed to rent the product");
         }
-      );
 
-      if (response.ok) {
-        console.log("Product successfully rented");
-      } else {
-        console.error("Failed to rent the product");
+        onClose();
+      } catch (error) {
+        console.error("An error occurred while renting the product:", error);
       }
-
-      onClose();
-    } catch (error) {
-      console.error("An error occurred while renting the product:", error);
     }
   };
 
@@ -140,7 +156,7 @@ const BuyOrRent = ({ product, onClose, userId }) => {
             Buy
           </Button>
         </Group>
-        <Modal opened={rentOpened} onClose={rentClose} centered padding={"xl"}>
+        <Modal opened={rentOpened} onClose={rentClose} centered padding={"xl"} zIndex={"1"} >
           <Title order={2} fw={500}>
             Rental Period{" "}
           </Title>
@@ -150,6 +166,7 @@ const BuyOrRent = ({ product, onClose, userId }) => {
               label="From"
               placeholder="dd/mm/yyyy"
               maw={200}
+              style={{ width: '150px', height: '100px' }}
               {...rentalDates.getInputProps("rentalStart")}
             />
             <DateInput
@@ -157,6 +174,7 @@ const BuyOrRent = ({ product, onClose, userId }) => {
               label="To"
               placeholder="dd/mm/yyyy"
               maw={200}
+              style={{ width: '150px', height: '100px', zIndex: 100 }}
               {...rentalDates.getInputProps("rentalEnd")}
             />
           </Group>
@@ -183,6 +201,7 @@ const BuyOrRent = ({ product, onClose, userId }) => {
           </Group>
         </Modal>
       </Box>
+      <ToastContainer position="top-center" autoClose={1500} />
     </Box>
   );
 };
