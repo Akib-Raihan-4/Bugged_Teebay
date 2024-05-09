@@ -15,6 +15,7 @@ import { useForm } from "@mantine/form";
 const EditProduct = ({ product, onClose, categories }) => {
   // TODO Reusable input/form componennts
   const userId = product.ownerId;
+  console.log(product)
 
   // get current categories of product
   const productCategoriesArray = product.categories.map(({ category }) => {
@@ -28,6 +29,7 @@ const EditProduct = ({ product, onClose, categories }) => {
     rent_price: product.rent_price,
     rent_duration: product.rent_duration,
     categories: productCategoriesArray,
+    colors: product.colors
   };
 
   const form = useForm({
@@ -45,6 +47,7 @@ const EditProduct = ({ product, onClose, categories }) => {
   });
 
   const handleConfirmEdit = async (values) => {
+    // console.log(values)
     try {
       const apiRes = await fetch(
         `http://localhost:3001/api/v1/${userId}/${product.id}/1`,
@@ -54,7 +57,7 @@ const EditProduct = ({ product, onClose, categories }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(values),
-        },
+        }
       );
 
       if (!apiRes.ok) {
@@ -126,6 +129,19 @@ const EditProduct = ({ product, onClose, categories }) => {
                     { value: "monthly", label: "Monthly" },
                   ]}
                   {...form.getInputProps("rent_duration")}
+                />
+                <Select
+                  mt={"lg"}
+                  placeholder="Select color(s)"
+                  defaultValue={form.values.colors}
+                  data={[
+                    { value: "red", label: "Red" },
+                    { value: "blue", label: "Blue" },
+                    { value: "green", label: "Green" },
+                    { value: "yellow", label: "Yellow" },
+                    { value: "purple", label: "Purple" },
+                  ]}
+                  {...form.getInputProps("colors")}
                 />
               </Group>
             </Group>

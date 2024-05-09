@@ -34,6 +34,7 @@ model Product {
   purchase_price Float
   rent_price     Float
   rent_duration  String
+  colors         String?
   ownerId        Int
   owner          User           @relation(fields: [ownerId], references: [id])
   categories     CategoryToProduct[]

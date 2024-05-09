@@ -28,6 +28,7 @@ const getAllProducts = async (req, res) => {
         rent_duration: true,
         ownerId: true,
         owner: true,
+        colors:true,
         categories: {
           select: {
             category: true,
@@ -78,6 +79,7 @@ const getMyProducts = async (req, res) => {
         rent_duration: true,
         ownerId: true,
         owner: true,
+        colors:true,
         categories: {
           select: {
             category: true,
@@ -102,6 +104,7 @@ const addProduct = async (req, res) => {
     rent_price,
     rent_duration,
     categories,
+    colors
   } = req.body;
 
   // Does user exist?
@@ -122,6 +125,7 @@ const addProduct = async (req, res) => {
       purchase_price,
       rent_price,
       rent_duration,
+      colors,
       owner: {
         connect: { id: userId },
       },
@@ -430,6 +434,7 @@ const getBoughtProducts = async (req, res) => {
         rent_duration: true,
         ownerId: true,
         owner: true,
+        colors:true,
         categories: {
           select: {
             category: true,
@@ -466,6 +471,7 @@ const getRentedProducts = async (req, res) => {
         rent_duration: true,
         ownerId: true,
         owner: true,
+        colors:true,
         categories: {
           select: {
             category: true,
@@ -512,6 +518,7 @@ const getSoldProducts = async (req, res) => {
         rent_duration: true,
         ownerId: true,
         owner: true,
+        colors:true,
         categories: {
           select: {
             category: true,
@@ -548,6 +555,7 @@ const getLentProducts = async (req, res) => {
         rent_duration: true,
         ownerId: true,
         owner: true,
+        colors:true,
         categories: {
           select: {
             category: true,

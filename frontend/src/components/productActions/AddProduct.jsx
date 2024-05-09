@@ -34,6 +34,7 @@ function AddProduct({ onClose, userId, categories }) {
       rent_price: "",
       rent_duration: "",
       categories: [],
+      colors: "",
     },
   });
 
@@ -55,18 +56,10 @@ function AddProduct({ onClose, userId, categories }) {
     ) {
       errorPopup("All price and rent fields are required.");
       return false;
-    }
-    else if (
-      active === 3 &&
-      (purchase_price <= 0)
-    ) {
+    } else if (active === 3 && purchase_price <= 0) {
       errorPopup("Price should be greater than 0");
       return false;
-    }
-    else if (
-      active === 3 &&
-      (rent_price <= 0)
-    ) {
+    } else if (active === 3 && rent_price <= 0) {
       errorPopup("Rent should be greater than 0");
       return false;
     }
@@ -84,6 +77,7 @@ function AddProduct({ onClose, userId, categories }) {
     setActive((current) => (current > 0 ? current - 1 : current));
 
   const handleSubmit = async () => {
+    console.log(form.values)
     try {
       const apiRes = await fetch(
         `http://localhost:3001/api/v1/${userId}/product`,
@@ -181,6 +175,18 @@ function AddProduct({ onClose, userId, categories }) {
                       { value: "monthly", label: "Monthly" },
                     ]}
                     {...form.getInputProps("rent_duration")}
+                  />
+                  <Select
+                    mt={20}
+                    placeholder="Select color(s)"
+                    data={[
+                      { value: "red", label: "Red" },
+                      { value: "blue", label: "Blue" },
+                      { value: "green", label: "Green" },
+                      { value: "yellow", label: "Yellow" },
+                      { value: "purple", label: "Purple" }, 
+                    ]}
+                    {...form.getInputProps("colors")}
                   />
                 </Group>
               </Stepper.Step>

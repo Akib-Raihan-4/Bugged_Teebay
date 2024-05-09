@@ -56,6 +56,7 @@ const BuyOrRent = ({ product, onClose, userId }) => {
     rent_price: product.rent_price,
     rent_duration: product.rent_duration,
     categories: productCategoriesArray,
+    colors: product.colors
   };
 
   const handleRentClick = () => {
@@ -148,8 +149,10 @@ const BuyOrRent = ({ product, onClose, userId }) => {
                 })
                 .join(", ")}
           </Text>
+          <Text>Color: {reshapedProduct.colors}</Text>
           <Text>Price: ${reshapedProduct.purchase_price}</Text>
           <Text>{reshapedProduct.description}</Text>
+          
         </Box>
         <Group position="right">
           <Button uppercase color="violet" onClick={handleRentClick}>

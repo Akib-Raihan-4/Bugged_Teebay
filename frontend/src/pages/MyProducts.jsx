@@ -98,7 +98,7 @@ const MyProducts = () => {
     );
   }
 
-  const handleDelete = async (productId) => {
+  const handleDelete = async () => {
     try {
       const apiRes = await fetch(
         `http://localhost:3001/api/v1/${userId}/${productIdToDelete}/2`,

@@ -36,6 +36,9 @@ const ProductCard = ({ product, deleteIcon, rentalPeriod }) => {
             .join(", ")}
         </Text>
         <Text my={5} c={"dimmed"}>
+          Color: {product.colors} 
+        </Text>
+        <Text my={5} c={"dimmed"}>
           {product.purchase_price} | Rent: $
           {`${product.rent_price} ${product.rent_duration}`}
         </Text>
