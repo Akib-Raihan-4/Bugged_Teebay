@@ -9,7 +9,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
+import {  DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { GrClose } from "react-icons/gr";
@@ -32,15 +32,18 @@ const BuyOrRent = ({ product, onClose, userId }) => {
   const errorPopup = (message) => toast.error(message);
 
   const validateStep = () => {
-    const { rentalStart, rentalEnd } = rentalDates.values;
+    var { rentalStart, rentalEnd } = rentalDates.values;
 
+    rentalStart = new Date(rentalStart)
+    rentalEnd = new Date(rentalEnd)
+  
     if (rentalStart > rentalEnd) {
       errorPopup("Rental Start should be lower than Rental End");
-      return false
+      return false;
     }
-    return true
-
+    return true;
   };
+  
 
   const productCategoriesArray = product.categories.map(({ category }) => {
     return category.name;
@@ -161,16 +164,18 @@ const BuyOrRent = ({ product, onClose, userId }) => {
             Rental Period{" "}
           </Title>
           <Group mb={30} mt={40} position="apart">
-            <DateInput
-              valueFormat="DD/MM/YYYY"
+            <DateTimePicker
+              // dropdownType="modal"
+              defaultValue={new Date()}
               label="From"
               placeholder="dd/mm/yyyy"
               maw={200}
               style={{ width: '150px', height: '100px' }}
               {...rentalDates.getInputProps("rentalStart")}
             />
-            <DateInput
-              valueFormat="DD/MM/YYYY"
+            <DateTimePicker
+              // dropdownType="modal"
+              defaultValue={new Date()}
               label="To"
               placeholder="dd/mm/yyyy"
               maw={200}

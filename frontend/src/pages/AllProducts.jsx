@@ -54,7 +54,7 @@ const AllProducts = () => {
     );
   }
 
-  console.log(products);
+  // console.log(products);
 
   return (
     <Container my="xl" py={"lg"}>
