@@ -56,6 +56,20 @@ function AddProduct({ onClose, userId, categories }) {
       errorPopup("All price and rent fields are required.");
       return false;
     }
+    else if (
+      active === 3 &&
+      (purchase_price <= 0)
+    ) {
+      errorPopup("Price should be greater than 0");
+      return false;
+    }
+    else if (
+      active === 3 &&
+      (rent_price <= 0)
+    ) {
+      errorPopup("Rent should be greater than 0");
+      return false;
+    }
     return true;
   };
 
