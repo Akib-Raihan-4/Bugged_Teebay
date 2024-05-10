@@ -40,7 +40,7 @@ const MyProducts = () => {
   const productsQueryResults = useQuery(
     [`user${userId}Products`],
     () => fetchMyProducts(userId),
-    { staleTime: Infinity }
+    { refetchOnWindow: true,}
   );
 
   if (productsQueryResults.isLoading || categoriesQueryResults.isLoading) {

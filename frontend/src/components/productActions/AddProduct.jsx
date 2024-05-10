@@ -200,6 +200,9 @@ function AddProduct({ onClose, userId, categories }) {
                     <Text>Title: {form.values.title}</Text>
                   </Grid.Col>
                   <Grid.Col>
+                    <Text>Color: {form.values.colors}</Text>
+                  </Grid.Col>
+                  <Grid.Col>
                     <Text>
                       Categories:{" "}
                       {form.values.categories

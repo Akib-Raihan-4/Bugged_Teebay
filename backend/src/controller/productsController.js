@@ -182,7 +182,7 @@ const deleteProduct = async (req, res) => {
 };
 
 const editProduct = async (req, res) => {
-  const userId = parseInt(req.params.userId, 10); // convert string to integer
+  const userId = parseInt(req.params.userId, 10); 
 
   try {
     const productId = parseInt(req.params.productId, 10);
@@ -193,43 +193,55 @@ const editProduct = async (req, res) => {
       rent_price,
       rent_duration,
       categories,
+      colors
     } = req.body;
 
-    // Find product by ID
     const product = await prisma.product.findUnique({
       where: { id: productId },
-      include: {
-        categories: {
-          select: {
-            category: true,
-          },
-        },
-      },
+      include: { categories: true },
     });
 
     if (!product || product.ownerId !== userId) {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    const updatedProduct = await prisma.product.update({
-      where: { id: productId },
-      data: {
-        title,
-        description,
-        purchase_price,
-        rent_price,
-        rent_duration,
-        categories: {
-          set: categories.map((category) => ({ name: category })),
+    await prisma.$transaction([
+      prisma.categoryToProduct.deleteMany({
+        where: {
+          productId: productId,
         },
-      },
-    });
+      }),
 
-    res.json(updatedProduct);
+      prisma.product.update({
+        where: { id: productId },
+        data: {
+          title,
+          description,
+          purchase_price,
+          rent_price,
+          rent_duration,
+          colors,
+          categories: {
+            create: categories.map((categoryName) => ({
+              category: {
+                connectOrCreate: {
+                  where: { name: categoryName },
+                  create: { name: categoryName },
+                },
+              },
+            })),
+          },
+        },
+      }),
+    ]);
+
+    res.json({ message: "Product updated successfully" });
   } catch (error) {
+    console.error("Error updating product:", error);
     res.status(500).json({ error: "Error updating product" });
   }
 };
+
 
 const buyProduct = async (req, res) => {
   const customerId = parseInt(req.params.userId, 10);

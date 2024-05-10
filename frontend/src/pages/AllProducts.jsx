@@ -23,7 +23,7 @@ const AllProducts = () => {
     [`allProducts${userId}`],
     () => fetchAllProducts(userId),
     {
-      staleTime: Infinity,
+      refetchOnWindow: true,
     }
   );
 
